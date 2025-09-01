@@ -45,6 +45,7 @@ export interface PaneViewOptions {
   priority?: LayoutPriority;
   preferredSize?: number | string;
   snap?: boolean;
+  excludeFromAutoResize?: boolean;
 }
 
 export class PaneView implements View {
@@ -54,6 +55,7 @@ export class PaneView implements View {
   readonly element: HTMLElement;
   readonly priority?: LayoutPriority | undefined;
   readonly snap: boolean;
+  readonly excludeFromAutoResize: boolean;
 
   private layoutService: LayoutService;
   private layoutStrategy: Layout;
@@ -133,6 +135,11 @@ export class PaneView implements View {
     this.priority = options.priority ?? LayoutPriority.Normal;
 
     this.snap = typeof options.snap === "boolean" ? options.snap : false;
+
+    this.excludeFromAutoResize =
+      typeof options.excludeFromAutoResize === "boolean"
+        ? options.excludeFromAutoResize
+        : false;
   }
 
   layout(_size: number): void {}

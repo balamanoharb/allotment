@@ -35,7 +35,8 @@ function isPaneProps(props: AllotmentProps | PaneProps): props is PaneProps {
     (props as PaneProps).maxSize !== undefined ||
     (props as PaneProps).preferredSize !== undefined ||
     (props as PaneProps).priority !== undefined ||
-    (props as PaneProps).visible !== undefined
+    (props as PaneProps).visible !== undefined ||
+    (props as PaneProps).excludeFromAutoResize !== undefined
   );
 }
 
@@ -64,6 +65,8 @@ export type PaneProps = {
   priority?: LayoutPriority;
   /** Whether the pane should be visible */
   visible?: boolean;
+  /** Whether the pane should be excluded from auto resize operations (visibility changes, screen resize, initial load) */
+  excludeFromAutoResize?: boolean;
 } & CommonProps;
 
 /**
@@ -238,6 +241,7 @@ const Allotment = forwardRef<AllotmentHandle, AllotmentProps>(
                     preferredSize: props?.preferredSize,
                   }),
                   snap: props?.snap ?? snap,
+                  excludeFromAutoResize: props?.excludeFromAutoResize ?? false,
                 });
 
                 views.current.push(view);
@@ -342,6 +346,7 @@ const Allotment = forwardRef<AllotmentHandle, AllotmentProps>(
               preferredSize: props?.preferredSize,
             }),
             snap: props?.snap ?? snap,
+            excludeFromAutoResize: props?.excludeFromAutoResize ?? false,
           });
 
           splitViewRef.current?.addView(

@@ -1073,16 +1073,23 @@ export class SplitView extends EventEmitter implements Disposable {
     const indexes = range(0, this.viewItems.length);
     const sortedIndexes: number[] = [];
 
+    // Filter out views that are excluded from auto-resize
     const lowPriorityIndexes = indexes.filter(
-      (i) => this.viewItems[i].priority === LayoutPriority.Low,
+      (i) =>
+        this.viewItems[i].priority === LayoutPriority.Low &&
+        !(this.viewItems[i].view as any).excludeFromAutoResize,
     );
 
     const normalPriorityIndexes = indexes.filter(
-      (i) => this.viewItems[i].priority === LayoutPriority.Normal,
+      (i) =>
+        this.viewItems[i].priority === LayoutPriority.Normal &&
+        !(this.viewItems[i].view as any).excludeFromAutoResize,
     );
 
     const highPriorityIndexes = indexes.filter(
-      (i) => this.viewItems[i].priority === LayoutPriority.High,
+      (i) =>
+        this.viewItems[i].priority === LayoutPriority.High &&
+        !(this.viewItems[i].view as any).excludeFromAutoResize,
     );
 
     sortedIndexes.push(
@@ -1091,7 +1098,10 @@ export class SplitView extends EventEmitter implements Disposable {
       ...lowPriorityIndexes,
     );
 
-    if (typeof lowPriorityIndex === "number") {
+    if (
+      typeof lowPriorityIndex === "number" &&
+      !(this.viewItems[lowPriorityIndex].view as any).excludeFromAutoResize
+    ) {
       pushToEnd(sortedIndexes, lowPriorityIndex);
     }
 
