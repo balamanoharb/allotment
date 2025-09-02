@@ -101,7 +101,7 @@
     "build": "rollup -c && npm run build-types",
     "build-storybook": "storybook build",
     "build-types": "tsc",
-    "prepare": "husky",
+    "prepare": "husky && npm run build",
     "storybook": "storybook dev -p 6006",
     "test": "jest"
   }
